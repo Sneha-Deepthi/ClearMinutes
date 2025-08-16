@@ -7,6 +7,7 @@ export default function Home() {
   const [summary, setSummary] = useState('')
   const [email, setEmail] = useState('')
   const [loading, setLoading] = useState(false)
+  const [sending, setSending] = useState(false)
 
   const handleSummarize = async () => {
     setLoading(true)
@@ -26,6 +27,7 @@ export default function Home() {
   }
 
   const handleSendEmail = async () => {
+    setSending(true)
     try {
       const res = await fetch('/api/email', {
         method: 'POST',
@@ -38,65 +40,89 @@ export default function Home() {
       console.error(err)
       alert('Error sending email')
     }
+    setSending(false)
   }
 
   return (
-    <main className="min-h-screen bg-gray-50 flex flex-col items-center p-6">
-      <h1 className="text-2xl font-bold mb-6">AI Meeting Notes Summarizer</h1>
+    <main className="min-h-screen w-full bg-gradient-to-br from-gray-50 to-gray-100 flex justify-center p-6">
+      <div className="w-full max-w-6xl">
+        <h1 className="text-4xl font-serif text-indigo-700 mb-6 text-center">
+          ClearMinutes
+        </h1>
 
-      {/* Transcript Input */}
-      <textarea
-        className="w-full max-w-2xl p-3 border rounded-md mb-4 focus:ring focus:ring-blue-300"
-        rows="6"
-        placeholder="Paste meeting transcript here..."
-        value={transcript}
-        onChange={(e) => setTranscript(e.target.value)}
-      />
-
-      {/* Instruction Input */}
-      <input
-        className="w-full max-w-2xl p-3 border rounded-md mb-4 focus:ring focus:ring-blue-300"
-        type="text"
-        placeholder='Enter custom instruction (e.g., "Summarize in bullet points")'
-        value={instruction}
-        onChange={(e) => setInstruction(e.target.value)}
-      />
-
-      <button
-        onClick={handleSummarize}
-        disabled={loading}
-        className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 disabled:opacity-50"
-      >
-        {loading ? 'Generating...' : 'Generate Summary'}
-      </button>
-
-      {/* Summary Editor */}
-      {summary && (
-        <div className="w-full max-w-2xl mt-6">
-          <h2 className="text-lg font-semibold mb-2">Generated Summary</h2>
-          <textarea
-            className="w-full p-3 border rounded-md mb-4 focus:ring focus:ring-blue-300"
-            rows="6"
-            value={summary}
-            onChange={(e) => setSummary(e.target.value)}
-          />
-          <div className="flex gap-2">
-            <input
-              className="flex-1 p-3 border rounded-md focus:ring focus:ring-blue-300"
-              type="email"
-              placeholder="Enter recipient email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Left Card: Transcript + Instruction */}
+          <div className="bg-white shadow-lg rounded-2xl p-8">
+            <label className="block mb-2 text-sm font-medium text-gray-600">
+              Meeting Transcript
+            </label>
+            <textarea
+              className="w-full p-4 border border-gray-300 rounded-lg mb-6 focus:ring-2 focus:ring-indigo-400 focus:outline-none"
+              rows="6"
+              placeholder="Paste meeting transcript here..."
+              value={transcript}
+              onChange={(e) => setTranscript(e.target.value)}
             />
+
+            <label className="block mb-2 text-sm font-medium text-gray-600">
+              Custom Instruction
+            </label>
+            <input
+              className="w-full p-4 border border-gray-300 rounded-lg mb-6 focus:ring-2 focus:ring-indigo-400 focus:outline-none"
+              type="text"
+              placeholder='E.g., "Summarize in bullet points"'
+              value={instruction}
+              onChange={(e) => setInstruction(e.target.value)}
+            />
+
             <button
-              onClick={handleSendEmail}
-              className="bg-green-600 text-white px-6 py-2 rounded-md hover:bg-green-700"
+              onClick={handleSummarize}
+              disabled={loading || !transcript}
+              className="w-full bg-indigo-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Send
+              {loading ? '⏳ Generating...' : '✨ Generate Summary'}
             </button>
           </div>
+
+          {/* Right Card: Summary + Email */}
+          <div className="bg-white shadow-lg rounded-2xl p-8 flex flex-col">
+            <h2 className="text-2xl font-semibold text-gray-700 mb-4 text-center">
+              Generated Summary
+            </h2>
+
+            {summary ? (
+              <>
+                <textarea
+                  className="w-full p-4 border border-gray-300 rounded-lg mb-4 flex-1 focus:ring-2 focus:ring-indigo-400 focus:outline-none"
+                  rows="8"
+                  value={summary}
+                  onChange={(e) => setSummary(e.target.value)}
+                />
+                <div className="flex gap-3">
+                  <input
+                    className="flex-1 p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-400 focus:outline-none"
+                    type="email"
+                    placeholder="Recipient email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                  <button
+                    onClick={handleSendEmail}
+                    disabled={sending || !email}
+                    className="bg-emerald-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {sending ? '📤 Sending...' : 'Send'}
+                  </button>
+                </div>
+              </>
+            ) : (
+              <p className="text-gray-500 text-center mt-10">
+                ⚡ Generate a summary to see results here
+              </p>
+            )}
+          </div>
         </div>
-      )}
+      </div>
     </main>
   )
 }
