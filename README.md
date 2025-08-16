@@ -1,36 +1,90 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# ClearMinutes 📝✨
 
-## Getting Started
+AI-powered meeting transcript summarizer with email integration.
 
-First, run the development server:
+## 🚀 Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+-   Paste meeting transcript and generate concise summaries.
+-   Add custom summarization instructions (e.g., bullet points, action
+    items).
+-   Send generated summaries directly via email.
+-   Beautiful Tailwind CSS UI with responsive grid layout.
+-   Deployed on **Vercel** for instant access.
+
+## 🛠️ Tech Stack
+
+-   **Next.js 14 (App Router)**
+-   **Tailwind CSS** for styling
+-   **Groq API** (LLM summarization)
+-   **Resend** for email sending
+-   **Vercel** for deployment
+
+## 📦 Installation
+
+1.  Clone the repository:
+
+    ``` bash
+    git clone https://github.com/your-username/clearminutes.git
+    cd clearminutes
+    ```
+
+2.  Install dependencies:
+
+    ``` bash
+    npm install
+    ```
+
+3.  Create a `.env.local` file in the root directory:
+
+    ``` env
+    GROQ_API_KEY=your_groq_api_key
+    RESEND_API_KEY=your_resend_api_key
+    ```
+
+4.  Run the development server:
+
+    ``` bash
+    npm run dev
+    ```
+
+5.  Open <http://localhost:3000> in your browser.
+
+## 🚢 Deployment
+
+Deploy easily on **Vercel**:
+
+``` bash
+vercel
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Or connect your GitHub repo and deploy directly from Vercel Dashboard.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## 🔑 Environment Variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+  Variable           Description
+  ------------------ ------------------------------------
+  `GROQ_API_KEY`     API key for Groq LLM
+  `RESEND_API_KEY`   API key for Resend email service
 
-## Learn More
+## 📧 Email Sending
 
-To learn more about Next.js, take a look at the following resources:
+-   By default, **Resend** is recommended (production ready).
+  
+## 💡 Example Prompt
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Transcript:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+    We discussed project deadlines. John will finish the frontend by Friday. Sarah will handle backend testing.
 
-## Deploy on Vercel
+Instruction:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+    Summarize as action items.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Output:
+
+    - John: Complete frontend by Friday  
+    - Sarah: Handle backend testing  
+
+### 👩‍💻 Author
+
+Developed by **Sneha**❤️
